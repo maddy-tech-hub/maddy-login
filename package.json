@@ -100,7 +100,6 @@
     "webpack-dev-server": "^4.14.0",
     "whatwg-fetch": "^3.6.20"
   },
-
   "scripts": {
     "start": "webpack serve --hot --open",
     "build": "node ./scripts/build.js",
