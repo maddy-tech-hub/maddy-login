@@ -5,7 +5,8 @@ const deps = require('./package.json').dependencies
 
 module.exports = {
         mfePlugin: new ModuleFederationPlugin({
-            name: 'maddy-login',
+            name: 'maddy_login',
+            library: { type: 'global', name: 'maddy_login' },
             filename: 'remoteEntry.js',
             exposes: {
                 "./LoginComponent": "./src/pages/LoginPage.tsx",
