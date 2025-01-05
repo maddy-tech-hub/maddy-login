@@ -4,8 +4,8 @@ import Loader from './components/Misc/Loader';
 import { useIntl } from 'react-intl';
 
 const routes = [
-  { path: '/', Component: React.lazy(() => import('./components/AuthLinks')) },
-  { path: '/login', Component: React.lazy(() => import('./pages/LoginPage')) },
+  // { path: '/login', Component: React.lazy(() => import('./components/AuthLinks')) },
+  { path: '/', Component: React.lazy(() => import('./pages/LoginPage')) },
   {
     path: '/signup',
     Component: React.lazy(() => import('./pages/SignupPage')),
