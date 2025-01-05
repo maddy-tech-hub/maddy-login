@@ -102,7 +102,7 @@
   },
   "scripts": {
     "start": "webpack serve --hot --open",
-    "build": "npx webpack --config webpack.config.js --mode production",
+    "build": "webpack --config webpack.config.js --mode production",
     "lint": "npx eslint src --ext .js,.jsx,.ts,.tsx",
     "lint:fix": "npx eslint src --ext .js,.jsx,.ts,.tsx --fix",
     "prettier": "prettier \"src/**/*.{ts,tsx,js,jsx}\" --check",
