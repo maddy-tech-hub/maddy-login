@@ -42,6 +42,7 @@ const messages: Record<string, Record<string, string>> = {
     resetting: 'Resetting...',
     forgetPasswordError: 'Failed to submit email. Please try again.',
     resetPasswordError: 'Failed to reset password. Please try again.',
+    loading: 'Loading...',
   },
   fr: {
     // Authentication and general messages

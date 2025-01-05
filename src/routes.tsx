@@ -1,7 +1,10 @@
 import React from 'react';
 import { Routes, Route } from 'react-router-dom';
+import Loader from './components/Misc/Loader';
+import { useIntl } from 'react-intl';
 
 const routes = [
+  { path: '/', Component: React.lazy(() => import('./components/AuthLinks')) },
   { path: '/login', Component: React.lazy(() => import('./pages/LoginPage')) },
   {
     path: '/signup',
@@ -14,8 +17,9 @@ const routes = [
 ];
 
 const AppRoutes: React.FC = (): JSX.Element => {
+  const intl = useIntl();
   return (
-    <React.Suspense fallback={<div>Loading...</div>}>
+    <React.Suspense fallback={<Loader text={intl.formatMessage({ id: 'loading' })} fullScreen={true}/>}>
       <Routes>
         {routes.map(({ path, Component }) => (
           <Route key={path} path={path} element={<Component />} />
