@@ -1,35 +1,47 @@
-name: React Deployment Workflow
+name: Deploy to AWS S3
 
 on:
   push:
     branches:
-      - main
+      - main  # Trigger on pushes to the main branch
 
 jobs:
   deploy:
+    name: Build and Deploy to S3
     runs-on: ubuntu-latest
+
+    env:
+      NODE_VERSION: '18' # Specify your Node.js version
+
     steps:
-      - name: Checkout code
+      - name: Checkout Source Code
         uses: actions/checkout@v3
 
-      - name: Install Node.js
+      - name: Set Up Node.js
         uses: actions/setup-node@v3
         with:
-          node-version: '16'
+          node-version: ${{ env.NODE_VERSION }}
+          cache: 'npm'
 
-      - name: Install dependencies
+      - name: Install Dependencies
         run: npm install
 
-      - name: Build React app
+      - name: Build Project
         run: npm run build
 
-      - name: Deploy to S3
+      - name: Upload Build Artifacts
+        uses: actions/upload-artifact@v3
+        with:
+          name: build
+          path: ./build
+
+      - name: Deploy to AWS S3
         uses: jakejarvis/s3-sync-action@v0.5.1
         with:
-          args: --follow-symlinks --delete --exclude "node_modules/*" --exclude "*.map" --exclude "*.log" ./build/ s3://${{ secrets.AWS_S3_BUCKET }}/
+          args: --follow-symlinks --delete --exclude "node_modules/*" --exclude "*.map" --exclude "*.log"
         env:
-          AWS_S3_BUCKET: ${{ secrets.AWS_S3_BUCKET }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-          AWS_REGION: ap-south-1
-          AWS_DEFAULT_OUTPUT: json
+          AWS_REGION: "ap-south-1" # Hardcoded AWS Region
+          AWS_S3_BUCKET: "maddy-login" # Hardcoded S3 Bucket Name
+          SOURCE_DIR: './build'
