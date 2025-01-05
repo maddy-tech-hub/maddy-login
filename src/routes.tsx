@@ -2,7 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 
 const routes = [
-  { path: '/login', Component: React.lazy(() => import('./pages/LoginPage')) },
+  { path: '/', Component: React.lazy(() => import('./pages/LoginPage')) },
   {
     path: '/signup',
     Component: React.lazy(() => import('./pages/SignupPage')),
