@@ -9,7 +9,10 @@ interface AuthTemplateProps {
 
 const TemplateWrapper = styled.div`
   display: flex;
-  height: 100vh;
+  min-height: 100vh;
+  background:
+    radial-gradient(circle at top left, rgba(12, 94, 252, 0.12), transparent 30%),
+    linear-gradient(180deg, #f5f8ff 0%, #eef3ff 100%);
 `;
 
 const LeftPanel = styled.div`
@@ -18,7 +21,7 @@ const LeftPanel = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  background-color: #f4f6f9;
+  padding: 32px;
 `;
 
 const RightPanel = styled.div`
@@ -26,17 +29,28 @@ const RightPanel = styled.div`
   background: url(${loginBanner}) no-repeat center center/cover;
   background-size: cover;
   background-position: center;
-  z-index: 1; /* Ensure it is below the interactive elements */
-  position: relative; /* Required for z-index to take effect */
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background: linear-gradient(180deg, rgba(6, 19, 54, 0.08), rgba(6, 19, 54, 0.52));
+  }
+
+  @media (max-width: 960px) {
+    display: none;
+  }
 `;
 
 const Logo = styled.div`
   font-size: 2rem;
-  font-weight: bold;
-  margin-bottom: 2rem;
+  font-weight: 700;
+  margin-bottom: 1.5rem;
   display: flex;
   align-items: center;
   gap: 10px;
+  color: #102347;
 
   img {
     width: 40px;

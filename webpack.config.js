@@ -41,17 +41,25 @@ const envKeys = Object.keys(rawEnv).reduce((prev, next) => {
 module.exports = {
     mode: isDevelopment ? 'development' : 'production',
     entry: './src/index.tsx',
-    devtool: 'source-map',
+    devtool: isDevelopment ? 'eval-source-map' : 'source-map',
     devServer: {
+        host: '0.0.0.0',
+        allowedHosts: 'all',
         hot: true,
         historyApiFallback: true,
-        port: process.env.PORT || 8080,
+        port: process.env.PORT || 3001,
     },
     target: 'web',
+    cache: {
+        type: 'filesystem',
+    },
     output: {
-        filename: 'bundle.[hash].js',
+        uniqueName: 'auth_remote',
+        filename: 'bundle.[contenthash].js',
         path: path.resolve(__dirname, 'dist'),
         clean: true,
+        publicPath: 'auto',
+        assetModuleFilename: 'assets/[name].[contenthash][ext][query]',
     },
     plugins: [
         new HtmlWebpackPlugin({ template: './public/index.html' }),
@@ -73,23 +81,18 @@ module.exports = {
     module: {
         rules: [
             {
-                test: /\.ts$|tsx/,
+                test: /\.[jt]sx?$/,
                 exclude: /node_modules/,
-                loader: require.resolve('babel-loader'),
-                options: { plugins: [isDevelopment && require.resolve('react-refresh/babel')].filter(Boolean), },
-            },
-            {
-                test: /.(js|jsx|.ts$|tsx)$/,
-                exclude: /node_modules/,
-                use: [
-                    {
-                        loader: 'babel-loader',
-                        options: {
-                            cacheDirectory: true,
-                            plugins: ['@babel/plugin-transform-runtime'],
-                        },
+                use: {
+                    loader: 'babel-loader',
+                    options: {
+                        cacheDirectory: true,
+                        plugins: [
+                            '@babel/plugin-transform-runtime',
+                            isDevelopment && require.resolve('react-refresh/babel'),
+                        ].filter(Boolean),
                     },
-                ],
+                },
             },
             {
                 test: /\.css$/,
@@ -100,5 +103,13 @@ module.exports = {
                 type: 'asset/resource',
             },
         ],
+    },
+    optimization: {
+        moduleIds: 'deterministic',
+        chunkIds: 'deterministic',
+        splitChunks: {
+            chunks: 'async',
+        },
+        runtimeChunk: false,
     },
 };

@@ -22,6 +22,9 @@ import Loader from '@src/components/Misc/Loader';
 import PopupModal from '@src/components/Misc/PopupModal';
 import { useNavigate, Link } from 'react-router-dom';
 import { useIntl } from 'react-intl';
+import AuthField from '@src/features/auth/components/AuthField';
+import AuthFooterLink from '@src/features/auth/components/AuthFooterLink';
+import OtpInputGroup from '@src/features/auth/components/OtpInputGroup';
 
 const SignupPage: React.FC = () => {
   const intl = useIntl();
@@ -190,18 +193,7 @@ const SignupPage: React.FC = () => {
             {intl.formatMessage({ id: 'enterOtp' })}
           </h2>
           {otpError && <ErrorMessage>{otpError}</ErrorMessage>}
-          <OTPContainer>
-            {otp.map((digit, index) => (
-              <Input
-                id={`otp-input-${index}`}
-                key={index}
-                type="text"
-                maxLength={1}
-                value={digit}
-                onChange={(e) => handleOtpChange(index, e.target.value)}
-              />
-            ))}
-          </OTPContainer>
+          <OtpInputGroup value={otp} onChange={handleOtpChange} />
           <Button type="submit" disabled={loading}>
             {loading
               ? intl.formatMessage({ id: 'verifyingOtp' })
@@ -228,57 +220,46 @@ const SignupPage: React.FC = () => {
       ) : (
         <Form onSubmit={handleSignup}>
           {generalError && <GeneralError>{generalError}</GeneralError>}
-          <Input
+          <AuthField
             type="text"
             placeholder={intl.formatMessage({ id: 'fullName' })}
             value={formData.fullName}
-            onChange={(e) => handleInputChange('fullName', e.target.value)}
+            error={formErrors.fullName}
+            onChange={(value) => handleInputChange('fullName', value)}
           />
-          {formErrors.fullName && (
-            <ErrorMessage>{formErrors.fullName}</ErrorMessage>
-          )}
-
-          <Input
+          <AuthField
             type="email"
             placeholder={intl.formatMessage({ id: 'email' })}
             value={formData.email}
-            onChange={(e) => handleInputChange('email', e.target.value)}
+            error={formErrors.email}
+            onChange={(value) => handleInputChange('email', value)}
           />
-          {formErrors.email && <ErrorMessage>{formErrors.email}</ErrorMessage>}
           {apiErrors.email && <ErrorMessage>{apiErrors.email}</ErrorMessage>}
-
-          <Input
+          <AuthField
             type="password"
             placeholder={intl.formatMessage({ id: 'password' })}
             value={formData.password}
-            onChange={(e) => handleInputChange('password', e.target.value)}
+            error={formErrors.password}
+            onChange={(value) => handleInputChange('password', value)}
           />
-          {formErrors.password && (
-            <ErrorMessage>{formErrors.password}</ErrorMessage>
-          )}
-
-          <Input
+          <AuthField
             type="tel"
             placeholder={intl.formatMessage({ id: 'phoneNumber' })}
             value={formData.phone}
-            onChange={(e) => handleInputChange('phone', e.target.value)}
+            error={formErrors.phone}
+            onChange={(value) => handleInputChange('phone', value)}
           />
-          {formErrors.phone && <ErrorMessage>{formErrors.phone}</ErrorMessage>}
 
           <Button type="submit" disabled={loading}>
             {loading
               ? intl.formatMessage({ id: 'processing' })
               : intl.formatMessage({ id: 'signUp' })}
           </Button>
-          <Footer>
-            {intl.formatMessage({ id: 'alreadyMember' })}{' '}
-            <Link
-              to="/login"
-              style={{ color: '#007bff', textDecoration: 'none' }}
-            >
-              {intl.formatMessage({ id: 'login' })}
-            </Link>
-          </Footer>
+          <AuthFooterLink
+            prefix={intl.formatMessage({ id: 'alreadyMember' })}
+            href="/login"
+            label={intl.formatMessage({ id: 'login' })}
+          />
         </Form>
       )}
 

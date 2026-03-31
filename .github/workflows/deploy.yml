@@ -13,6 +13,12 @@ jobs:
     - name: Checkout code
       uses: actions/checkout@v2
 
+    - name: Setup Node
+      uses: actions/setup-node@v4
+      with:
+        node-version: '24.14.1'
+        cache: 'npm'
+
     - name: Install dependencies
       run: npm install
 
@@ -23,7 +29,7 @@ jobs:
       run: ls -alh ./dist
 
     - name: Sync to S3
-      run: aws s3 sync ./dist s3://maddy-login --delete --exclude "node_modules/*"
+      run: aws s3 sync ./dist s3://${{ secrets.AWS_S3_BUCKET }} --delete --exclude "node_modules/*"
       env:
         AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
         AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}

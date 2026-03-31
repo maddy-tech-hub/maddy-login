@@ -1,9 +1,18 @@
 const { execSync } = require('child_process');
 const environment = process.env.ENVIRONMENT || 'development';
+const env = {
+  ...process.env,
+  NODE_ENV: environment,
+};
 
 if (environment === 'production') {
-    execSync('export NODE_ENV=production && npx webpack --config webpack.config.js --mode production');
+    execSync('npx webpack --config webpack.config.js --mode production', {
+      env,
+      stdio: 'inherit',
+    });
 } else {
-    execSync('export NODE_ENV=development && npx webpack --config webpack.config.js --mode development');
+    execSync('npx webpack --config webpack.config.js --mode development', {
+      env,
+      stdio: 'inherit',
+    });
 }
-

@@ -14,6 +14,8 @@ import Loader from '../components/Misc/Loader';
 import PopupModal from '@src/components/Misc/PopupModal';
 import { forgetPassword, resetPassword } from '@src/redux/slices/userSlice';
 import { useIntl } from 'react-intl';
+import AuthField from '@src/features/auth/components/AuthField';
+import AuthFooterLink from '@src/features/auth/components/AuthFooterLink';
 
 const ForgetPage: React.FC = () => {
   const intl = useIntl();
@@ -101,12 +103,11 @@ const ForgetPage: React.FC = () => {
       {!isEmailSubmitted ? (
         <Form onSubmit={handleEmailSubmit}>
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{' '}
-          {/* Display error message */}
-          <Input
+          <AuthField
             type="email"
             placeholder={intl.formatMessage({ id: 'enterEmail' })}
             value={email}
-            onChange={(e) => setEmail(e.target.value)}
+            onChange={setEmail}
           />
           <Button type="submit" disabled={loading}>
             {loading
@@ -117,24 +118,23 @@ const ForgetPage: React.FC = () => {
       ) : (
         <Form onSubmit={handlePasswordReset}>
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{' '}
-          {/* Display error message */}
-          <Input
+          <AuthField
             type="password"
             placeholder={intl.formatMessage({ id: 'currentPassword' })}
             value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
+            onChange={setCurrentPassword}
           />
-          <Input
+          <AuthField
             type="password"
             placeholder={intl.formatMessage({ id: 'newPassword' })}
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={setNewPassword}
           />
-          <Input
+          <AuthField
             type="password"
             placeholder={intl.formatMessage({ id: 'confirmNewPassword' })}
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={setConfirmPassword}
           />
           <Button type="submit" disabled={loading}>
             {loading
@@ -143,10 +143,11 @@ const ForgetPage: React.FC = () => {
           </Button>
         </Form>
       )}
-      <Footer>
-        {intl.formatMessage({ id: 'backToLogin' })}{' '}
-        <Link to="/login">{intl.formatMessage({ id: 'login' })}</Link>
-      </Footer>
+      <AuthFooterLink
+        prefix={intl.formatMessage({ id: 'backToLogin' })}
+        href="/login"
+        label={intl.formatMessage({ id: 'login' })}
+      />
       {isSuccessModalOpen && (
         <PopupModal
           isOpen={isSuccessModalOpen}

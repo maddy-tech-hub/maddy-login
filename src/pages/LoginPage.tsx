@@ -16,6 +16,10 @@ import PopupModal from '@src/components/Misc/PopupModal';
 import { validateField } from '@src/services/validationService';
 import { setToken } from '@src/redux/slices/authSlice';
 import { useIntl } from 'react-intl';
+import AuthField from '@src/features/auth/components/AuthField';
+import AuthFooterLink from '@src/features/auth/components/AuthFooterLink';
+import { emitShellEvent } from '@src/shared/lib/shell/eventBus';
+import { persistSessionSnapshot } from '@src/shared/lib/sessionStorage';
 
 const LoginPage: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatchType>();
@@ -64,9 +68,15 @@ const LoginPage: React.FC = (): JSX.Element => {
       ).unwrap();
 
       if (data.status) {
-        localStorage.setItem('userToken', data.token);
-        localStorage.setItem('userInfo', JSON.stringify(data));
         dispatch(setToken(data.token));
+        persistSessionSnapshot({
+          token: data.token,
+          user: data,
+        });
+        emitShellEvent('maddy:auth-changed', {
+          token: data.token,
+          user: data,
+        });
         setIsSuccessModalOpen(true);
       } else {
         // Use intl to get localized message
@@ -86,7 +96,7 @@ const LoginPage: React.FC = (): JSX.Element => {
 
   const handleModalClose = () => {
     setIsSuccessModalOpen(false);
-    navigate('/home');
+    navigate('/');
   };
 
   return (
@@ -94,24 +104,20 @@ const LoginPage: React.FC = (): JSX.Element => {
       {loading && <Loader text={intl.formatMessage({ id: 'loggingIn' })} />}
       <Form onSubmit={handleLogin}>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
-        <Input
+        <AuthField
           type="text"
           placeholder={intl.formatMessage({ id: 'username' })}
           value={username}
-          onChange={(e) => handleInputChange('username', e.target.value)}
+          error={fieldErrors.username}
+          onChange={(value) => handleInputChange('username', value)}
         />
-        {fieldErrors.username && (
-          <ErrorMessage>{fieldErrors.username}</ErrorMessage>
-        )}
-        <Input
+        <AuthField
           type="password"
           placeholder={intl.formatMessage({ id: 'password' })}
           value={password}
-          onChange={(e) => handleInputChange('password', e.target.value)}
+          error={fieldErrors.password}
+          onChange={(value) => handleInputChange('password', value)}
         />
-        {fieldErrors.password && (
-          <ErrorMessage>{fieldErrors.password}</ErrorMessage>
-        )}
         <div style={{ display: 'flex', justifyContent: 'flex-start' }}>
           <Link
             style={{
@@ -130,10 +136,11 @@ const LoginPage: React.FC = (): JSX.Element => {
             : intl.formatMessage({ id: 'loginButton' })}
         </Button>
       </Form>
-      <Footer>
-        {intl.formatMessage({ id: 'notAMember' })}{' '}
-        <Link to="/signup">{intl.formatMessage({ id: 'signUpNow' })}</Link>
-      </Footer>
+      <AuthFooterLink
+        prefix={intl.formatMessage({ id: 'notAMember' })}
+        href="/signup"
+        label={intl.formatMessage({ id: 'signUpNow' })}
+      />
       {isSuccessModalOpen && (
         <PopupModal
           isOpen={isSuccessModalOpen}

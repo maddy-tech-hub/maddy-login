@@ -5,21 +5,24 @@ const deps = require('./package.json').dependencies
 
 module.exports = {
         mfePlugin: new ModuleFederationPlugin({
-            name: 'maddy_login',
-            library: { type: 'global', name: 'maddy_login' },
+            name: 'auth_remote',
+            library: { type: 'global', name: 'auth_remote' },
             filename: 'remoteEntry.js',
             exposes: {
-                "./LoginComponent": "./src/pages/LoginPage.tsx",
-                "./SignupComponent": "./src/pages/SignupPage.tsx",
-                "./ForgetComponent": "./src/pages/ForgetPage.tsx",
+                "./LoginScreen": "./src/app/remotes/LoginScreen.tsx",
+                "./SignupScreen": "./src/app/remotes/SignupScreen.tsx",
+                "./ForgetScreen": "./src/app/remotes/ForgetScreen.tsx",
              },             
             remotes: {},
             shared: {
-                ...deps,
-                react: { singleton: true,  requiredVersion: deps.react },
+                react: { singleton: true, requiredVersion: deps.react },
                 'react-dom': {
                     singleton: true,
                     requiredVersion: deps['react-dom'],
+                },
+                'react-router-dom': {
+                    singleton: true,
+                    requiredVersion: deps['react-router-dom'],
                 },
                 'styled-components': {
                     singleton: true,

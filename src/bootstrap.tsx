@@ -3,5 +3,5 @@ import App from './App';
 
 const container = document.getElementById('root');
 const root = createRoot(container!);
-console.log('omr : vemireddy login app Started');
+console.log('auth remote mounted');
 root.render(<App />);
