@@ -66,3 +66,4 @@ Recommended ownership inside this repo:
 - `src/hooks`: auth-specific hooks
 - `src/shared/components`: reusable auth UI parts
 - `src/styles`: auth styling
+
