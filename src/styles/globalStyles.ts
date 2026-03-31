@@ -1,35 +1,34 @@
 import { createGlobalStyle } from 'styled-components';
 
 export const GlobalStyles = createGlobalStyle`
-  [data-color-mode*='dark'], [data-color-mode*='dark'] body {
-    --gradient-from: #1c1e20;
-    --gradient-to: #0d1117;
-    --color-rgb: 255 255 255;
-  }
-  [data-color-mode*='light'], [data-color-mode*='light'] body {
-    --gradient-from: #e5eaf0;
-    --gradient-to: #fff;
-    --color-rgb: 0 0 0;
-  }
+  @import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@500;700&display=swap');
+
+  html,
   body {
-    font-size: 14px;
-    margin: 0;
-    padding: 0;
-    font-family: ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,Segoe UI,Roboto,Helvetica Neue,Arial,Noto Sans,sans-serif,Apple Color Emoji,Segoe UI Emoji,Segoe UI Symbol,Noto Color Emoji;
-    min-height: 100vh;
-    &::before {
-      content: "";
-      position: absolute;
-      width: 100%;
-      top: 0px;
-      --gradient-stops: var(--gradient-from),var(--gradient-to);
-      background-image: linear-gradient(to bottom,var(--gradient-stops));
-    }
-  }
-  html {
     min-height: 100%;
   }
+
+  body {
+    margin: 0;
+    background:
+      radial-gradient(circle at top left, rgba(17, 126, 255, 0.12), transparent 28%),
+      linear-gradient(180deg, #f4f7fb 0%, #eef3fb 100%);
+    color: #0d1b33;
+    font-family: 'DM Sans', 'Segoe UI', sans-serif;
+    font-size: 15px;
+  }
+
   * {
     box-sizing: border-box;
+  }
+
+  h1,
+  h2,
+  h3,
+  h4,
+  h5,
+  h6 {
+    font-family: 'Space Grotesk', 'Segoe UI', sans-serif;
+    letter-spacing: -0.02em;
   }
 `;

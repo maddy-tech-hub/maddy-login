@@ -4,40 +4,35 @@ export const Form = styled.form`
   display: flex;
   flex-direction: column;
   width: 100%;
-  max-width: 420px;
+  max-width: 440px;
+  margin-top: 1.75rem;
   background: rgba(255, 255, 255, 0.92);
   padding: 2rem;
-  border-radius: 24px;
-  border: 1px solid rgba(16, 35, 71, 0.08);
-  box-shadow: 0 30px 80px rgba(16, 35, 71, 0.12);
+  border-radius: 28px;
+  border: 1px solid rgba(13, 27, 51, 0.08);
+  box-shadow: 0 30px 80px rgba(8, 24, 48, 0.12);
   backdrop-filter: blur(14px);
-
-  &:hover {
-    box-shadow: 0 34px 90px rgba(16, 35, 71, 0.16);
-  }
 `;
 
 export const Input = styled.input`
   margin-bottom: 1rem;
   padding: 14px 16px;
   font-size: 1rem;
-  border: 1px solid #ced8ee;
+  border: 1px solid #d6e0f0;
   border-radius: 14px;
-  background-color: #f8fbff;
-  transition: all 0.3s ease;
+  background-color: #f9fbff;
+  transition: all 0.25s ease;
   cursor: text;
 
   &:hover {
-    background-color: #f4f8ff;
-    border-color: #8aa7df;
+    border-color: #9fb6e4;
   }
 
   &:focus {
     outline: none;
-    border-color: #0c5efc;
+    border-color: #117eff;
     background-color: #fff;
-    cursor: text;
-    box-shadow: 0 0 0 4px rgba(12, 94, 252, 0.16);
+    box-shadow: 0 0 0 4px rgba(17, 126, 255, 0.14);
   }
 
   &:disabled {
@@ -49,25 +44,26 @@ export const Input = styled.input`
 `;
 
 export const Button = styled.button`
+  min-height: 50px;
   padding: 14px;
   font-size: 1rem;
-  font-weight: 600;
-  background: linear-gradient(135deg, #0c5efc 0%, #2448d8 100%);
+  font-weight: 700;
+  background: linear-gradient(135deg, #117eff 0%, #2d4fd4 100%);
   color: white;
   border: none;
-  border-radius: 14px;
+  border-radius: 999px;
   cursor: pointer;
   transition: transform 0.2s ease, box-shadow 0.2s ease, opacity 0.3s ease;
 
   &:hover {
     transform: translateY(-1px);
-    box-shadow: 0 18px 30px rgba(12, 94, 252, 0.24);
+    box-shadow: 0 18px 30px rgba(17, 126, 255, 0.22);
   }
 
   &:disabled {
-    background: #b0c4de;
+    background: #c8d4e8;
     cursor: not-allowed;
-    opacity: 0.6;
+    opacity: 0.7;
     box-shadow: none;
     transform: none;
   }
@@ -75,16 +71,16 @@ export const Button = styled.button`
 
 export const Footer = styled.div`
   margin-top: 1rem;
-  font-size: 0.9rem;
-  color: #4f5d7a;
+  font-size: 0.92rem;
+  color: #5a6986;
 
   a {
-    color: #0c5efc;
+    color: #117eff;
     text-decoration: none;
-    font-weight: 600;
+    font-weight: 700;
 
     &:hover {
-      color: #2448d8;
+      color: #2d4fd4;
       text-decoration: underline;
     }
   }
@@ -96,24 +92,24 @@ export const OTPContainer = styled.div`
   justify-content: center;
 
   input {
-    width: 40px;
-    height: 50px;
-    font-size: 1.5rem;
+    width: 46px;
+    height: 54px;
+    font-size: 1.4rem;
     text-align: center;
-    border: 1px solid #ced8ee;
-    border-radius: 12px;
+    border: 1px solid #d6e0f0;
+    border-radius: 14px;
     cursor: pointer;
 
     &:focus {
-      border-color: #0c5efc;
-      box-shadow: 0 0 0 4px rgba(12, 94, 252, 0.16);
+      border-color: #117eff;
+      box-shadow: 0 0 0 4px rgba(17, 126, 255, 0.14);
     }
   }
 `;
 
 export const ErrorMessage = styled.div`
   color: #d92d20;
-  margin-bottom: 16px;
+  margin-bottom: 12px;
   font-size: 14px;
   text-align: left;
 `;
@@ -127,18 +123,15 @@ export const GeneralError = styled.div`
 export const BackButton = styled.button`
   background-color: transparent;
   border: none;
-  font-size: 1rem;
-  color: #0c5efc;
+  font-size: 0.95rem;
+  color: #117eff;
   cursor: pointer;
-  padding: 8px 16px;
+  padding: 8px 0 16px;
   text-align: left;
-  display: inline-block;
-  margin-bottom: 1rem;
-  margin-left: 0; /* Ensure no left margin */
-  align-self: flex-start; /* Align to the start of the container */
+  align-self: flex-start;
 
   &:hover {
-    color: #2448d8;
+    color: #2d4fd4;
     text-decoration: underline;
   }
 

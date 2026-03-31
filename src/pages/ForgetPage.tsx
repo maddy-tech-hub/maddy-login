@@ -19,6 +19,10 @@ import AuthFooterLink from '@src/features/auth/components/AuthFooterLink';
 
 const ForgetPage: React.FC = () => {
   const intl = useIntl();
+  const t = (id: string, fallback: string) => {
+    const message = intl.formatMessage({ id });
+    return message === id ? fallback : message;
+  };
   const dispatch = useDispatch<AppDispatchType>();
   const navigate = useNavigate();
 
@@ -42,12 +46,17 @@ const ForgetPage: React.FC = () => {
         setIsEmailSubmitted(true);
       } else {
         setErrorMessage(
-          data.message || intl.formatMessage({ id: 'forgetPasswordError' })
+          data.message ||
+            t(
+              'forgetPasswordError',
+              'Unable to send the password reset email. Please try again later.'
+            )
         );
       }
     } catch (err: any) {
       setErrorMessage(
-        err.message || intl.formatMessage({ id: 'unexpectedError' })
+        err.message ||
+          t('unexpectedError', 'An unexpected error occurred. Please try again.')
       );
     } finally {
       setLoading(false);
@@ -73,12 +82,14 @@ const ForgetPage: React.FC = () => {
         setIsSuccessModalOpen(true);
       } else {
         setErrorMessage(
-          data.message || intl.formatMessage({ id: 'resetPasswordError' })
+          data.message ||
+            t('resetPasswordError', 'Failed to reset password. Please try again.')
         );
       }
     } catch (err: any) {
       setErrorMessage(
-        err.message || intl.formatMessage({ id: 'unexpectedError' })
+        err.message ||
+          t('unexpectedError', 'An unexpected error occurred. Please try again.')
       );
     } finally {
       setLoading(false);
@@ -94,25 +105,26 @@ const ForgetPage: React.FC = () => {
     <AuthTemplate
       title={
         isEmailSubmitted
-          ? intl.formatMessage({ id: 'resetPassword' })
-          : intl.formatMessage({ id: 'forgetPassword' })
+          ? t('resetPassword', 'Reset password')
+          : t('forgetPassword', 'Forgot password')
       }
+      subtitle="Recover your access and get back into the platform with a simple reset flow."
     >
-      {loading && <Loader text={intl.formatMessage({ id: 'processing' })} />}{' '}
+      {loading && <Loader text={t('processing', 'Processing...')} />}{' '}
       {/* Show loader when loading */}
       {!isEmailSubmitted ? (
         <Form onSubmit={handleEmailSubmit}>
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{' '}
           <AuthField
             type="email"
-            placeholder={intl.formatMessage({ id: 'enterEmail' })}
+            placeholder={t('enterEmail', 'Enter your email address')}
             value={email}
             onChange={setEmail}
           />
           <Button type="submit" disabled={loading}>
             {loading
-              ? intl.formatMessage({ id: 'submitting' })
-              : intl.formatMessage({ id: 'submitEmail' })}
+              ? t('submitting', 'Submitting...')
+              : t('submitEmail', 'Submit email')}
           </Button>
         </Form>
       ) : (
@@ -120,40 +132,43 @@ const ForgetPage: React.FC = () => {
           {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}{' '}
           <AuthField
             type="password"
-            placeholder={intl.formatMessage({ id: 'currentPassword' })}
+            placeholder={t('currentPassword', 'Current password')}
             value={currentPassword}
             onChange={setCurrentPassword}
           />
           <AuthField
             type="password"
-            placeholder={intl.formatMessage({ id: 'newPassword' })}
+            placeholder={t('newPassword', 'New password')}
             value={newPassword}
             onChange={setNewPassword}
           />
           <AuthField
             type="password"
-            placeholder={intl.formatMessage({ id: 'confirmNewPassword' })}
+            placeholder={t('confirmNewPassword', 'Confirm new password')}
             value={confirmPassword}
             onChange={setConfirmPassword}
           />
           <Button type="submit" disabled={loading}>
             {loading
-              ? intl.formatMessage({ id: 'resetting' })
-              : intl.formatMessage({ id: 'resetPassword' })}
+              ? t('resetting', 'Resetting...')
+              : t('resetPassword', 'Reset password')}
           </Button>
         </Form>
       )}
       <AuthFooterLink
-        prefix={intl.formatMessage({ id: 'backToLogin' })}
+        prefix={t('backToLogin', 'Back to login')}
         href="/login"
-        label={intl.formatMessage({ id: 'login' })}
+        label={t('login', 'Login')}
       />
       {isSuccessModalOpen && (
         <PopupModal
           isOpen={isSuccessModalOpen}
           onClose={handleModalClose}
-          buttonText={intl.formatMessage({ id: 'ok' })}
-          message={intl.formatMessage({ id: 'passwordResetSuccess' })}
+          buttonText={t('ok', 'OK')}
+          message={t(
+            'passwordResetSuccess',
+            'Your password has been reset successfully. You can now log in.'
+          )}
         />
       )}
     </AuthTemplate>

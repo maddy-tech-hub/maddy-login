@@ -25,6 +25,10 @@ const LoginPage: React.FC = (): JSX.Element => {
   const dispatch = useDispatch<AppDispatchType>();
   const navigate = useNavigate();
   const intl = useIntl();
+  const t = (id: string, fallback: string) => {
+    const message = intl.formatMessage({ id });
+    return message === id ? fallback : message;
+  };
 
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
@@ -79,15 +83,14 @@ const LoginPage: React.FC = (): JSX.Element => {
         });
         setIsSuccessModalOpen(true);
       } else {
-        // Use intl to get localized message
         setErrorMessage(
-          data.message || intl.formatMessage({ id: 'loginFailed' })
+          data.message || t('loginFailed', 'Login failed. Please try again.')
         );
       }
     } catch (err: any) {
-      // Use intl to get localized error message
       setErrorMessage(
-        err.message || intl.formatMessage({ id: 'unexpectedError' })
+        err.message ||
+          t('unexpectedError', 'An unexpected error occurred. Please try again.')
       );
     } finally {
       setLoading(false);
@@ -100,20 +103,23 @@ const LoginPage: React.FC = (): JSX.Element => {
   };
 
   return (
-    <AuthTemplate title={intl.formatMessage({ id: 'loginPageTitle' })}>
-      {loading && <Loader text={intl.formatMessage({ id: 'loggingIn' })} />}
+    <AuthTemplate
+      title={t('loginPageTitle', 'Welcome back')}
+      subtitle="Sign in to access the portfolio platform, account tools, and reusable product demos."
+    >
+      {loading && <Loader text={t('loggingIn', 'Logging in...')} />}
       <Form onSubmit={handleLogin}>
         {errorMessage && <ErrorMessage>{errorMessage}</ErrorMessage>}
         <AuthField
           type="text"
-          placeholder={intl.formatMessage({ id: 'username' })}
+          placeholder={t('username', 'Username')}
           value={username}
           error={fieldErrors.username}
           onChange={(value) => handleInputChange('username', value)}
         />
         <AuthField
           type="password"
-          placeholder={intl.formatMessage({ id: 'password' })}
+          placeholder={t('password', 'Password')}
           value={password}
           error={fieldErrors.password}
           onChange={(value) => handleInputChange('password', value)}
@@ -124,29 +130,30 @@ const LoginPage: React.FC = (): JSX.Element => {
               color: '#007bff',
               cursor: 'pointer',
               paddingBottom: '10px',
+              fontWeight: 700,
             }}
             to="/forget"
           >
-            {intl.formatMessage({ id: 'forgotPassword' })}
+            {t('forgotPassword', 'Forgot Password?')}
           </Link>
         </div>
         <Button type="submit" disabled={isButtonDisabled}>
           {loading
-            ? intl.formatMessage({ id: 'loggingIn' })
-            : intl.formatMessage({ id: 'loginButton' })}
+            ? t('loggingIn', 'Logging in...')
+            : t('loginButton', 'Login')}
         </Button>
       </Form>
       <AuthFooterLink
-        prefix={intl.formatMessage({ id: 'notAMember' })}
+        prefix={t('notAMember', 'Not a member?')}
         href="/signup"
-        label={intl.formatMessage({ id: 'signUpNow' })}
+        label={t('signUpNow', 'Sign up now')}
       />
       {isSuccessModalOpen && (
         <PopupModal
           isOpen={isSuccessModalOpen}
           onClose={handleModalClose}
-          buttonText={intl.formatMessage({ id: 'ok' })}
-          message={intl.formatMessage({ id: 'loginSuccessMessage' })}
+          buttonText={t('ok', 'OK')}
+          message={t('loginSuccessMessage', 'Login successful! Welcome back.')}
         />
       )}
     </AuthTemplate>

@@ -28,6 +28,10 @@ import OtpInputGroup from '@src/features/auth/components/OtpInputGroup';
 
 const SignupPage: React.FC = () => {
   const intl = useIntl();
+  const t = (id: string, fallback: string) => {
+    const message = intl.formatMessage({ id });
+    return message === id ? fallback : message;
+  };
   const [formData, setFormData] = useState({
     fullName: '',
     email: '',
@@ -98,7 +102,9 @@ const SignupPage: React.FC = () => {
       if (error) {
         setGeneralError(error);
       } else {
-        setGeneralError(intl.formatMessage({ id: 'unexpectedError' }));
+        setGeneralError(
+          t('unexpectedError', 'An unexpected error occurred. Please try again.')
+        );
       }
     } finally {
       setLoading(false);
@@ -128,7 +134,7 @@ const SignupPage: React.FC = () => {
     e.preventDefault();
     const enteredOtp = otp.join('');
     if (enteredOtp.length !== 6) {
-      setOtpError(intl.formatMessage({ id: 'otpError' }));
+      setOtpError(t('otpError', 'Please enter a 6-digit OTP.'));
       return;
     }
 
@@ -144,7 +150,7 @@ const SignupPage: React.FC = () => {
         setOtpError(result.Message);
       }
     } catch {
-      setOtpError(intl.formatMessage({ id: 'invalidOtp' }));
+      setOtpError(t('invalidOtp', 'Invalid OTP. Please try again.'));
     } finally {
       setLoading(false);
     }
@@ -159,10 +165,14 @@ const SignupPage: React.FC = () => {
       ).unwrap();
 
       if (!result.status) {
-        setGeneralError(intl.formatMessage({ id: 'resendOtpError' }));
+        setGeneralError(
+          t('resendOtpError', 'Failed to resend OTP. Please try again later.')
+        );
       }
     } catch {
-      setGeneralError(intl.formatMessage({ id: 'unexpectedError' }));
+      setGeneralError(
+        t('unexpectedError', 'An unexpected error occurred. Please try again.')
+      );
     }
   };
 
@@ -179,28 +189,29 @@ const SignupPage: React.FC = () => {
     <AuthTemplate
       title={
         isOtpStep
-          ? intl.formatMessage({ id: 'verifyOtp' })
-          : intl.formatMessage({ id: 'signUp' })
+          ? t('verifyOtp', 'Verify OTP')
+          : t('signUp', 'Create account')
       }
+      subtitle="Create your account to explore the portfolio platform and related product demos."
     >
       {loading && <Loader />}
       {isOtpStep ? (
         <Form onSubmit={handleOtpSubmit}>
           <BackButton onClick={handleBack}>
-            {intl.formatMessage({ id: 'back' })}
+            {t('back', 'Back')}
           </BackButton>
           <h2 style={{ textAlign: 'center' }}>
-            {intl.formatMessage({ id: 'enterOtp' })}
+            {t('enterOtp', 'Enter OTP')}
           </h2>
           {otpError && <ErrorMessage>{otpError}</ErrorMessage>}
           <OtpInputGroup value={otp} onChange={handleOtpChange} />
           <Button type="submit" disabled={loading}>
             {loading
-              ? intl.formatMessage({ id: 'verifyingOtp' })
-              : intl.formatMessage({ id: 'verifyOtp' })}
+              ? t('verifyingOtp', 'Verifying OTP...')
+              : t('verifyOtp', 'Verify OTP')}
           </Button>
           <Footer>
-            {intl.formatMessage({ id: 'didNotReceiveOtp' })}{' '}
+            {t('didNotReceiveOtp', "Didn't receive the OTP?")}{' '}
             <a
               href="#"
               onClick={(e) => {
@@ -212,7 +223,7 @@ const SignupPage: React.FC = () => {
                 opacity: isResendDisabled ? 0.5 : 1,
               }}
             >
-              {intl.formatMessage({ id: 'resendOtp' })}{' '}
+              {t('resendOtp', 'Resend OTP')}{' '}
               {isResendDisabled && `(${resendTimer}s)`}
             </a>
           </Footer>
@@ -222,14 +233,14 @@ const SignupPage: React.FC = () => {
           {generalError && <GeneralError>{generalError}</GeneralError>}
           <AuthField
             type="text"
-            placeholder={intl.formatMessage({ id: 'fullName' })}
+            placeholder={t('fullName', 'Full Name')}
             value={formData.fullName}
             error={formErrors.fullName}
             onChange={(value) => handleInputChange('fullName', value)}
           />
           <AuthField
             type="email"
-            placeholder={intl.formatMessage({ id: 'email' })}
+            placeholder={t('email', 'Email')}
             value={formData.email}
             error={formErrors.email}
             onChange={(value) => handleInputChange('email', value)}
@@ -237,14 +248,14 @@ const SignupPage: React.FC = () => {
           {apiErrors.email && <ErrorMessage>{apiErrors.email}</ErrorMessage>}
           <AuthField
             type="password"
-            placeholder={intl.formatMessage({ id: 'password' })}
+            placeholder={t('password', 'Password')}
             value={formData.password}
             error={formErrors.password}
             onChange={(value) => handleInputChange('password', value)}
           />
           <AuthField
             type="tel"
-            placeholder={intl.formatMessage({ id: 'phoneNumber' })}
+            placeholder={t('phoneNumber', 'Phone Number')}
             value={formData.phone}
             error={formErrors.phone}
             onChange={(value) => handleInputChange('phone', value)}
@@ -252,13 +263,13 @@ const SignupPage: React.FC = () => {
 
           <Button type="submit" disabled={loading}>
             {loading
-              ? intl.formatMessage({ id: 'processing' })
-              : intl.formatMessage({ id: 'signUp' })}
+              ? t('processing', 'Processing...')
+              : t('signUp', 'Create account')}
           </Button>
           <AuthFooterLink
-            prefix={intl.formatMessage({ id: 'alreadyMember' })}
+            prefix={t('alreadyMember', 'Already have an account?')}
             href="/login"
-            label={intl.formatMessage({ id: 'login' })}
+            label={t('login', 'Login')}
           />
         </Form>
       )}
@@ -267,8 +278,11 @@ const SignupPage: React.FC = () => {
         <PopupModal
           isOpen={isSuccessModalOpen}
           onClose={handleModel}
-          buttonText={intl.formatMessage({ id: 'ok' })}
-          message={intl.formatMessage({ id: 'signupSuccessMessage' })}
+          buttonText={t('ok', 'OK')}
+          message={t(
+            'signupSuccessMessage',
+            'Account created successfully! You can now log in.'
+          )}
         />
       )}
     </AuthTemplate>
