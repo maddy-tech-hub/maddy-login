@@ -134,3 +134,5 @@ const messages: Record<string, Record<string, string>> = {
     resetPasswordInstruction: 'Veuillez entrer votre mot de passe actuel et votre nouveau mot de passe pour le réinitialiser.',
   },
 };
+
+export default messages;
